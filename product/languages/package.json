@@ -1,0 +1,11 @@
+{
+  "name": "@product/languages",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "@google-cloud/translate": "^9.0.1"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}
