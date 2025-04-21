@@ -28,17 +28,34 @@ export const extractWordsFromEpub = async (
           // Extract words from text
           const strippedText = text.replace(/<[^>]*>/g, ' ') // Strip HTML tags
 
-          // Process the clean text
-          const words = strippedText
-            .toLowerCase()
-            .replace(/[^\w\s-]/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .split(' ')
-            .filter((word) => word.length > 0)
-            .filter((word) => !/\d/.test(word))
+          // Split text into sentences to handle capitalization
+          const sentences = strippedText.split(/[.!?]+/)
 
-          words.forEach((word) => wordSet.add(word))
+          sentences.forEach((sentence) => {
+            const words = sentence
+              .replace(/[^\w\s-]/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim()
+              .split(' ')
+              .filter((word) => word.length > 0)
+              .filter((word) => !/\d/.test(word))
+
+            // Process each word in the sentence
+            if (words.length > 0) {
+              // Add first word (lowercase) if it exists
+              const firstWord = words[0].toLowerCase()
+              if (firstWord.length > 0) {
+                wordSet.add(firstWord)
+              }
+
+              // For remaining words, skip words that start with uppercase (likely names)
+              words.slice(1).forEach((word) => {
+                if (word.length > 0 && !/^[A-Z]/.test(word)) {
+                  wordSet.add(word.toLowerCase())
+                }
+              })
+            }
+          })
 
           processChapter(chapterIndex + 1)
         })

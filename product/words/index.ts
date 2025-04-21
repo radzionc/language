@@ -28,6 +28,10 @@ const main = async () => {
 
     const baseForm = getWordBaseForm(word)
 
+    if (ignoreWordsSet.has(baseForm)) {
+      return
+    }
+
     result.add(baseForm)
   })
 
