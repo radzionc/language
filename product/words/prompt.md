@@ -1,0 +1,1 @@
+I am a native Russian speaker with a strong command of English, but I occasionally encounter new words. I will provide you with an English word, and I would like you to translate it and offer a clear explanation to help me remember its meaning effectively.

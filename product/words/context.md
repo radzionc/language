@@ -1,0 +1,1 @@
+This script takes an `input.epub` file and extracts all the words from it into an `output.txt` file. I use it to learn new words from books that I listen to as audiobooks. As I encounter new words, I add them to the `ignore_words.txt` file to prevent the script from extracting them again.
