@@ -17,8 +17,7 @@ const adverbAdjectiveSuffixes: Record<string, string> = {
 }
 
 export const getWordBaseForm = (word: string): string => {
-  // const doc = nlp(`${word} to`)
-  const doc = nlp(word)
+  const doc = nlp(`${word} to`)
 
   const singularForm = doc.nouns().toSingular().text()
   if (singularForm) {
