@@ -33,8 +33,8 @@ export const getWordBaseForm = (word: string): string => {
   }
 
   const baseForm = doc.verbs().toInfinitive().text()
-  if (baseForm && baseForm !== word) {
-    return baseForm
+  if (baseForm) {
+    return baseForm.replace(' to', '')
   }
 
   const adjective = getAdjective(doc)
