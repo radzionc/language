@@ -1,7 +1,7 @@
 import { getWordBaseForm } from './core/getWordBaseForm'
 
 const main = () => {
-  const word = 'incredibly'
+  const word = 'egg'
 
   console.log(getWordBaseForm(word))
 }

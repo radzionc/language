@@ -9,11 +9,19 @@ const getAdjective = (doc: Three) => {
   }
 }
 
+const adverbAdjectiveSuffixes: Record<string, string> = {
+  ibly: 'ible',
+  ably: 'able',
+  ally: 'al',
+  ly: '',
+}
+
 export const getWordBaseForm = (word: string): string => {
-  const doc = nlp(`${word} to`)
+  // const doc = nlp(`${word} to`)
+  const doc = nlp(word)
 
   const singularForm = doc.nouns().toSingular().text()
-  if (singularForm && singularForm !== word) {
+  if (singularForm) {
     return singularForm
   }
 
@@ -29,8 +37,14 @@ export const getWordBaseForm = (word: string): string => {
 
   const adverb = doc.adverbs().text()
   if (adverb) {
-    if (adverb.endsWith('ibly')) {
-      const adjective = getAdjective(nlp(adverb.slice(0, -4) + 'ible'))
+    const suffix = Object.keys(adverbAdjectiveSuffixes).find((suffix) =>
+      adverb.endsWith(suffix),
+    )
+    if (suffix) {
+      const replacement = adverbAdjectiveSuffixes[suffix]
+      const adjective = getAdjective(
+        nlp(adverb.slice(0, -suffix.length) + replacement),
+      )
       if (adjective) {
         return adjective
       }
