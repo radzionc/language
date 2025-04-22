@@ -1,7 +1,7 @@
 import { getWordBaseForm } from './core/getWordBaseForm'
 
 const main = () => {
-  const word = 'egg'
+  const word = 'colloquially'
 
   console.log(getWordBaseForm(word))
 }

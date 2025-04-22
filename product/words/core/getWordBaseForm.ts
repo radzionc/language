@@ -1,3 +1,4 @@
+import { order } from '@lib/utils/array/order'
 import nlp from 'compromise'
 import Three from 'compromise/types/view/three'
 
@@ -13,8 +14,15 @@ const adverbAdjectiveSuffixes: Record<string, string> = {
   ibly: 'ible',
   ably: 'able',
   ally: 'al',
+  ily: 'y',
   ly: '',
 }
+
+const adverbSuffixes = order(
+  Object.keys(adverbAdjectiveSuffixes),
+  (suffix) => suffix.length,
+  'desc',
+)
 
 export const getWordBaseForm = (word: string): string => {
   const doc = nlp(`${word} to`)
@@ -36,9 +44,7 @@ export const getWordBaseForm = (word: string): string => {
 
   const adverb = doc.adverbs().text()
   if (adverb) {
-    const suffix = Object.keys(adverbAdjectiveSuffixes).find((suffix) =>
-      adverb.endsWith(suffix),
-    )
+    const suffix = adverbSuffixes.find((suffix) => adverb.endsWith(suffix))
     if (suffix) {
       const replacement = adverbAdjectiveSuffixes[suffix]
       const adjective = getAdjective(
@@ -49,8 +55,6 @@ export const getWordBaseForm = (word: string): string => {
       }
     }
   }
-
-  console.log('Unknown word', word)
 
   return word
 }
