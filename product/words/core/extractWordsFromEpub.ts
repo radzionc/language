@@ -11,13 +11,11 @@ export const extractWordsFromEpub = async (
       const chapters = [...epub.flow]
 
       const processChapter = (chapterIndex: number) => {
-        // Base case: all chapters processed
         if (chapterIndex >= chapters.length) {
           resolve(wordSet)
           return
         }
 
-        // Process current chapter
         const chapter = chapters[chapterIndex]
         epub.getChapter(chapter.id, (error: Error | null, text: string) => {
           if (error) {
@@ -25,10 +23,8 @@ export const extractWordsFromEpub = async (
             return
           }
 
-          // Extract words from text
-          const strippedText = text.replace(/<[^>]*>/g, ' ') // Strip HTML tags
+          const strippedText = text.replace(/<[^>]*>/g, ' ')
 
-          // Split text into sentences to handle capitalization
           const sentences = strippedText.split(/[.!?]+/)
 
           sentences.forEach((sentence) => {
@@ -40,15 +36,12 @@ export const extractWordsFromEpub = async (
               .filter((word) => word.length > 0)
               .filter((word) => !/\d/.test(word))
 
-            // Process each word in the sentence
             if (words.length > 0) {
-              // Add first word (lowercase) if it exists
               const firstWord = words[0].toLowerCase()
               if (firstWord.length > 0) {
                 wordSet.add(firstWord)
               }
 
-              // For remaining words, skip words that start with uppercase (likely names)
               words.slice(1).forEach((word) => {
                 if (word.length > 0 && !/^[A-Z]/.test(word)) {
                   wordSet.add(word.toLowerCase())
@@ -61,7 +54,6 @@ export const extractWordsFromEpub = async (
         })
       }
 
-      // Start processing from the first chapter
       processChapter(0)
     })
 
@@ -69,7 +61,6 @@ export const extractWordsFromEpub = async (
       reject(error)
     })
 
-    // Start parsing the epub
     epub.parse()
   })
 }
